@@ -1,0 +1,10 @@
+version: "3.5"
+
+services: 
+  web-api:
+    build: ShoppingOnline.csproj
+    container_name: web-api
+    restart: always
+    ports:
+    - "7000:80"  
+      
