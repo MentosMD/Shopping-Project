@@ -8,5 +8,7 @@ namespace ShoppingOnline.Services.ProductService
     {
         IEnumerable<Product> GetAll();
         IEnumerable<Product> FilterByParameters(FilterParameters filter);
+        Product GetById(int id);
+        Rating GetRatingById(int idProduct, int idProfile);
     }
 }

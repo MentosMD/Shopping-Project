@@ -10,5 +10,6 @@ namespace ShoppingOnline.Models
         public double Discount { get; set; }
         public ICollection<ProductPicture> ProductPictures { get; set; }
         public ProductDetail ProductDetail { get; set; }
+        public ICollection<Rating> Ratings { get; set; }
     }
 }

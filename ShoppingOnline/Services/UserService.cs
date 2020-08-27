@@ -60,6 +60,11 @@ namespace ShoppingOnline.Services
             _userRepository.AddNewEntity(newUser);
         }
 
+        public void ChangePassword(User user)
+        {
+            _userRepository.UpdateEntity(user);
+        }
+
         private bool IsEmailExisting(string email)
         {
             var users = _userRepository.GetAll().FirstOrDefault(u => u.Email == email);

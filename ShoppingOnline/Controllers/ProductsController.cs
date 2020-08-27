@@ -1,9 +1,12 @@
+using System;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingOnline.Models;
 using ShoppingOnline.Query;
+using ShoppingOnline.Services;
 using ShoppingOnline.Services.ProductService;
+using ShoppingOnline.Services.ProfileService;
 
 namespace ShoppingOnline.Controllers
 {
@@ -12,10 +15,15 @@ namespace ShoppingOnline.Controllers
     public class ProductsController : Controller
     {
         private readonly IProductService _productService;
+        private readonly IUserService _userService;
+        private readonly IProfileService _profileService;
 
-        public ProductsController(IProductService productService)
+        public ProductsController(IProductService productService, 
+                IUserService userService, IProfileService profileService)
         {
             _productService = productService;
+            _userService = userService;
+            _profileService = profileService;
         }
         
         [AllowAnonymous]
@@ -39,9 +47,24 @@ namespace ShoppingOnline.Controllers
         [Authorize(Roles = Roles.User)]
         [Route("/rating/add")]
         [HttpPost]
-        public IActionResult RatingProduct([FromBody] int score)
+        public IActionResult RatingProduct([FromBody] int score, int productId)
         {
-            return Ok();
+            var userId = HttpContext.User.Identity.Name;
+            if (score > 5)
+            {
+                score = 5;
+            }
+            var getProduct = _productService.GetById(productId);
+            var getProfile = _profileService.GetById(int.Parse(userId));
+            var getRating = _productService.GetRatingById(getProduct.ID, getProfile.ID);
+            if (getProduct == null) throw new ArgumentNullException("Product is not found");
+            if (getProfile == null) throw new ArgumentNullException("User is not found");
+            if (getRating != null) return BadRequest("You have voted!");
+            Rating rating = new Rating();
+            rating.Score = score;
+            rating.Product = getProduct;
+            rating.Profile = getProfile;
+            return Ok("Thanks for your rating");
         }
     }
 }

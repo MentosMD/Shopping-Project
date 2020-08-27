@@ -17,5 +17,20 @@ namespace ShoppingOnline.Extensions
                 new Product() { ID = 7, Name = "Nokia 5.1", Price = 1999, Discount = 100, CodeProduct = "00-00036476-003" }
             );
         }
+
+        public static void OrdersBuilder(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Profile>()
+                .HasMany(o => o.Orders)
+                .WithOne(o => o.Profile)
+                .HasForeignKey(p => p.ProfileRef)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<OrdersItems>()
+                .HasOne(o => o.Order)
+                .WithMany(o => o.OrdersItems)
+                .HasForeignKey(o => o.OrderRef)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }

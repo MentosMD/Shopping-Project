@@ -14,16 +14,74 @@ namespace ShoppingOnline.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .UseIdentityColumns()
+                .HasAnnotation("ProductVersion", "3.1.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.0-preview.7.20365.15");
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("ShoppingOnline.Models.Comment", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Comment");
+                });
+
+            modelBuilder.Entity("ShoppingOnline.Models.Order", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("OrderStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProfileRef")
+                        .HasColumnType("int");
+
+                    b.Property<double>("TotalSum")
+                        .HasColumnType("float");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ProfileRef");
+
+                    b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("ShoppingOnline.Models.OrdersItems", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("OrderRef")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("OrderRef");
+
+                    b.ToTable("OrdersItems");
+                });
 
             modelBuilder.Entity("ShoppingOnline.Models.Product", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CodeProduct")
                         .HasColumnType("nvarchar(max)");
@@ -105,7 +163,7 @@ namespace ShoppingOnline.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AccumulatorBattery")
                         .HasColumnType("nvarchar(max)");
@@ -156,7 +214,7 @@ namespace ShoppingOnline.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("FileExtension")
                         .HasColumnType("nvarchar(max)");
@@ -182,7 +240,7 @@ namespace ShoppingOnline.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
@@ -216,12 +274,38 @@ namespace ShoppingOnline.Migrations
                     b.ToTable("Profile");
                 });
 
+            modelBuilder.Entity("ShoppingOnline.Models.Rating", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ProductRef")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProfileRef")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ProductRef");
+
+                    b.HasIndex("ProfileRef")
+                        .IsUnique();
+
+                    b.ToTable("Rating");
+                });
+
             modelBuilder.Entity("ShoppingOnline.Models.User", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -238,6 +322,24 @@ namespace ShoppingOnline.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("ShoppingOnline.Models.Order", b =>
+                {
+                    b.HasOne("ShoppingOnline.Models.Profile", "Profile")
+                        .WithMany("Orders")
+                        .HasForeignKey("ProfileRef")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ShoppingOnline.Models.OrdersItems", b =>
+                {
+                    b.HasOne("ShoppingOnline.Models.Order", "Order")
+                        .WithMany("OrdersItems")
+                        .HasForeignKey("OrderRef")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ShoppingOnline.Models.ProductDetail", b =>
@@ -263,6 +365,21 @@ namespace ShoppingOnline.Migrations
                     b.HasOne("ShoppingOnline.Models.User", "User")
                         .WithOne("Profile")
                         .HasForeignKey("ShoppingOnline.Models.Profile", "UserRef")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ShoppingOnline.Models.Rating", b =>
+                {
+                    b.HasOne("ShoppingOnline.Models.Product", "Product")
+                        .WithMany("Ratings")
+                        .HasForeignKey("ProductRef")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShoppingOnline.Models.Profile", "Profile")
+                        .WithOne("Rating")
+                        .HasForeignKey("ShoppingOnline.Models.Rating", "ProfileRef")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

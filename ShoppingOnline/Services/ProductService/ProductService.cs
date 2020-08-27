@@ -4,16 +4,19 @@ using System.Linq;
 using ShoppingOnline.Models;
 using ShoppingOnline.Query;
 using ShoppingOnline.Repository.ProductRepository;
+using ShoppingOnline.Repository.RatingRepository;
 
 namespace ShoppingOnline.Services.ProductService
 {
     public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
+        private readonly IRatingRepository _ratingRepository;
 
-        public ProductService(IProductRepository productRepository)
+        public ProductService(IProductRepository productRepository, IRatingRepository ratingRepository)
         {
             _productRepository = productRepository;
+            _ratingRepository = ratingRepository;
         }
         public IEnumerable<Product> GetAll()
         {
@@ -49,6 +52,16 @@ namespace ShoppingOnline.Services.ProductService
             }
 
             return _productRepository.GetAll();
+        }
+
+        public Product GetById(int id)
+        {
+            return GetAll().FirstOrDefault(p => p.ID == id);
+        }
+
+        public Rating GetRatingById(int idProduct, int idProfile)
+        {
+            return _ratingRepository.GetRatingById(idProduct, idProfile);
         }
     }
 }

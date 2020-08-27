@@ -64,5 +64,17 @@ namespace ShoppingOnline.Controllers
             _userService.AddNewUser(newUser);
             return Ok("User is created");
         }
+        
+        [Authorize(Roles = Roles.User)]
+        [Route("password/change")]
+        [HttpPut]
+        public IActionResult ChangePassword([FromBody] string password, string repeatPassword)
+        {
+            if (!password.Equals(repeatPassword)) return BadRequest("Password is not match");
+            var user = _userService.GetById(int.Parse(HttpContext.User.Identity.Name));
+            user.Password = password;
+            _userService.ChangePassword(user);
+            return Ok("Changed!");
+        }
     }
 }

@@ -1,3 +1,4 @@
+using System.Linq;
 using ShoppingOnline.Context;
 using ShoppingOnline.Models;
 

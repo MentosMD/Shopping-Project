@@ -16,6 +16,9 @@ namespace ShoppingOnline.Context
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductPicture> ProductPictures { get; set; }
         public DbSet<ProductDetail> ProductDetails { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrdersItems> OrdersItems { get; set; }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {}
@@ -39,11 +42,27 @@ namespace ShoppingOnline.Context
                 .HasForeignKey<ProductDetail>(p => p.ProductID)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<Rating>()
+                .HasOne(r => r.Product)
+                .WithMany(p => p.Ratings)
+                .HasForeignKey(r => r.ProductRef)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Profile>()
+                .HasOne(r => r.Rating)
+                .WithOne(p => p.Profile)
+                .HasForeignKey<Rating>(r => r.ProfileRef);
+            
+            modelBuilder.OrdersBuilder();
+            
             modelBuilder.Entity<User>().ToTable("User");
             modelBuilder.Entity<Profile>().ToTable("Profile");
             modelBuilder.Entity<Product>().ToTable("Product");
             modelBuilder.Entity<ProductPicture>().ToTable("ProductPicture");
             modelBuilder.Entity<ProductDetail>().ToTable("ProductDetail");
+            modelBuilder.Entity<Comment>().ToTable("Comment");
+            modelBuilder.Entity<Order>().ToTable("Order");
+            modelBuilder.Entity<OrdersItems>().ToTable("OrdersItems");
             
             modelBuilder.Seed();
         }

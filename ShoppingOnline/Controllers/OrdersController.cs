@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ShoppingOnline.Models;
 
 namespace ShoppingOnline.Controllers
 {
@@ -8,15 +9,15 @@ namespace ShoppingOnline.Controllers
     [Route("/orders")]
     public class OrdersController : Controller
     {
-        [Authorize(Roles = "USER")]
-        [Route("/checkout")]
+        [Authorize(Roles = Roles.User)]
+        [Route("/add")]
         public IActionResult Checkout()
         {
             return Ok();
         }
 
-        [Authorize(Roles = "USER")]
-        [Route("/status")]
+        [Authorize(Roles = Roles.User)]
+        [Route("/change-status")]
         public IActionResult StatusOrder()
         {
             return Ok();

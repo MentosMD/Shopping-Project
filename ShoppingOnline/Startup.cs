@@ -59,10 +59,6 @@ namespace ShoppingOnline
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
-            // services.AddIdentity<IdentityUser, IdentityRole>(options =>
-            // {
-            //     options.SignIn.RequireConfirmedEmail = false;
-            // }).AddEntityFrameworkStores<AppContext>();
             
             
             var appSettingsSection = Configuration.GetSection("AppSettings");

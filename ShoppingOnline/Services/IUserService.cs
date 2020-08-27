@@ -8,5 +8,6 @@ namespace ShoppingOnline.Services
         object Authenticate(LoginViewModel model);
         User GetById(int id);
         void AddNewUser(User newUser);
+        void ChangePassword(User user);
     }
 }

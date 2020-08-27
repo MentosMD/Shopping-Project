@@ -4,6 +4,7 @@ using ShoppingOnline.Models;
 using ShoppingOnline.Repository;
 using ShoppingOnline.Repository.ProductRepository;
 using ShoppingOnline.Repository.ProfileRepository;
+using ShoppingOnline.Repository.RatingRepository;
 using ShoppingOnline.Repository.UserRepository;
 using ShoppingOnline.Services;
 using ShoppingOnline.Services.ProductService;
@@ -26,6 +27,7 @@ namespace ShoppingOnline.Extensions
             services.AddScoped<IProfileRepository, ProfileRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IRatingRepository, RatingRepository>();
         }
 
         public static void AddServices(this IServiceCollection services)

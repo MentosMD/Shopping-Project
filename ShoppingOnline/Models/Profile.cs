@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace ShoppingOnline.Models
 {
     public class Profile : BaseEntity
@@ -11,5 +13,7 @@ namespace ShoppingOnline.Models
         public string Avatar { get; set; }
         public int UserRef { get; set;}
         public User User { get; set; }
+        public ICollection<Order> Orders { get; set; }
+        public Rating Rating { get; set; }
     }
 }
