@@ -7,6 +7,7 @@ using ShoppingOnline.Query;
 using ShoppingOnline.Services;
 using ShoppingOnline.Services.ProductService;
 using ShoppingOnline.Services.ProfileService;
+using ShoppingOnline.ViewModels;
 
 namespace ShoppingOnline.Controllers
 {
@@ -15,14 +16,11 @@ namespace ShoppingOnline.Controllers
     public class ProductsController : Controller
     {
         private readonly IProductService _productService;
-        private readonly IUserService _userService;
         private readonly IProfileService _profileService;
 
-        public ProductsController(IProductService productService, 
-                IUserService userService, IProfileService profileService)
+        public ProductsController(IProductService productService, IProfileService profileService)
         {
             _productService = productService;
-            _userService = userService;
             _profileService = profileService;
         }
         
@@ -45,16 +43,17 @@ namespace ShoppingOnline.Controllers
         }
 
         [Authorize(Roles = Roles.User)]
-        [Route("/rating/add")]
+        [Route("rating/add")]
         [HttpPost]
-        public IActionResult RatingProduct([FromBody] int score, int productId)
+        public IActionResult RatingProduct([FromBody] RatingViewModel ratingViewModel)
         {
             var userId = HttpContext.User.Identity.Name;
+            int score = ratingViewModel.Score;
             if (score > 5)
             {
                 score = 5;
             }
-            var getProduct = _productService.GetById(productId);
+            var getProduct = _productService.GetById(ratingViewModel.ProductId);
             var getProfile = _profileService.GetById(int.Parse(userId));
             var getRating = _productService.GetRatingById(getProduct.ID, getProfile.ID);
             if (getProduct == null) throw new ArgumentNullException("Product is not found");
@@ -64,6 +63,7 @@ namespace ShoppingOnline.Controllers
             rating.Score = score;
             rating.Product = getProduct;
             rating.Profile = getProfile;
+            _productService.AddRating(rating);
             return Ok("Thanks for your rating");
         }
     }

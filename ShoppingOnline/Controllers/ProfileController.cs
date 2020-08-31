@@ -1,6 +1,7 @@
 using System;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingOnline.Models;
 using ShoppingOnline.Repository.UserRepository;
@@ -51,6 +52,17 @@ namespace ShoppingOnline.Controllers
             profile.Address = profileView.Address;
             _profileService.UpdateProfile(profile);
             return Ok("Updated");
+        }
+    
+        [Authorize(Roles = Roles.User)]
+        [Route("upload/avatar")]
+        [HttpPost]
+        public IActionResult UploadAvatar([FromForm] IFormFile avatar)
+        {
+            if (avatar.Length == 0) return BadRequest("Avatar is not found");
+            var profileId = int.Parse(HttpContext.User.Identity.Name);
+            _profileService.UploadImage(avatar, profileId);
+            return Ok("Uploaded!");
         }
     }
 }

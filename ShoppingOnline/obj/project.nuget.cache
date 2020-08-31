@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "UhY4yb1resy/8hyII/+hWKovucp8BzpqCTlk0vq3GPz/tK+t/5z2ntX/EjKrzhk+b1XUKJRLOTkHBQe9T6lNgQ==",
+  "dgSpecHash": "gDpADUZ52WWZyusN8FQ/+8xSHbETU1UyEW3TMoX8XLb76Zxpq0n9/DZkhAVko3o5Sp13l8RPMWBM8Lzz7PJurw==",
   "success": true,
   "projectFilePath": "/home/mentos/RiderProjects/ShoppingOnline/ShoppingOnline/ShoppingOnline.csproj",
   "expectedPackageFiles": [
@@ -19,6 +19,8 @@
     "/usr/share/dotnet/sdk/NuGetFallbackFolder/microsoft.aspnetcore.http.abstractions/2.2.0/microsoft.aspnetcore.http.abstractions.2.2.0.nupkg.sha512",
     "/usr/share/dotnet/sdk/NuGetFallbackFolder/microsoft.aspnetcore.http.extensions/2.2.0/microsoft.aspnetcore.http.extensions.2.2.0.nupkg.sha512",
     "/usr/share/dotnet/sdk/NuGetFallbackFolder/microsoft.aspnetcore.http.features/2.2.0/microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
+    "/home/mentos/.nuget/packages/microsoft.aspnetcore.jsonpatch/3.1.7/microsoft.aspnetcore.jsonpatch.3.1.7.nupkg.sha512",
+    "/home/mentos/.nuget/packages/microsoft.aspnetcore.mvc.newtonsoftjson/3.1.7/microsoft.aspnetcore.mvc.newtonsoftjson.3.1.7.nupkg.sha512",
     "/usr/share/dotnet/sdk/NuGetFallbackFolder/microsoft.aspnetcore.staticfiles/2.2.0/microsoft.aspnetcore.staticfiles.2.2.0.nupkg.sha512",
     "/home/mentos/.nuget/packages/microsoft.bcl.asyncinterfaces/1.1.1/microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "/home/mentos/.nuget/packages/microsoft.bcl.hashcode/1.1.0/microsoft.bcl.hashcode.1.1.0.nupkg.sha512",
@@ -58,7 +60,8 @@
     "/home/mentos/.nuget/packages/microsoft.packaging.tools/1.0.0-preview1-25301-01/microsoft.packaging.tools.1.0.0-preview1-25301-01.nupkg.sha512",
     "/usr/share/dotnet/sdk/NuGetFallbackFolder/microsoft.win32.registry/4.5.0/microsoft.win32.registry.4.5.0.nupkg.sha512",
     "/home/mentos/.nuget/packages/netstandard.library/2.0.0-preview1-25301-01/netstandard.library.2.0.0-preview1-25301-01.nupkg.sha512",
-    "/usr/share/dotnet/sdk/NuGetFallbackFolder/newtonsoft.json/11.0.2/newtonsoft.json.11.0.2.nupkg.sha512",
+    "/home/mentos/.nuget/packages/newtonsoft.json/12.0.2/newtonsoft.json.12.0.2.nupkg.sha512",
+    "/home/mentos/.nuget/packages/newtonsoft.json.bson/1.0.2/newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "/usr/share/dotnet/sdk/NuGetFallbackFolder/runtime.native.system/4.3.0/runtime.native.system.4.3.0.nupkg.sha512",
     "/home/mentos/.nuget/packages/runtime.native.system.data.sqlclient.sni/4.4.0/runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "/usr/share/dotnet/sdk/NuGetFallbackFolder/runtime.win-arm64.runtime.native.system.data.sqlclient.sni/4.4.0/runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",

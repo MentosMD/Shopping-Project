@@ -9,8 +9,8 @@ using ShoppingOnline.Context;
 namespace ShoppingOnline.Migrations
 {
     [DbContext(typeof(AppContext))]
-    [Migration("20200827102115_AddedRating")]
-    partial class AddedRating
+    [Migration("20200831113318_AddedAvatar")]
+    partial class AddedAvatar
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,30 @@ namespace ShoppingOnline.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("ShoppingOnline.Models.AvatarProfile", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Extension")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProfileRef")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ProfileRef")
+                        .IsUnique();
+
+                    b.ToTable("AvatarProfile");
+                });
+
             modelBuilder.Entity("ShoppingOnline.Models.Comment", b =>
                 {
                     b.Property<int>("ID")
@@ -27,10 +51,20 @@ namespace ShoppingOnline.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValueSql("getdate()");
+
                     b.Property<string>("Message")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ProfileRef")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
+
+                    b.HasIndex("ProfileRef");
 
                     b.ToTable("Comment");
                 });
@@ -250,9 +284,6 @@ namespace ShoppingOnline.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
-                    b.Property<string>("Avatar")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
@@ -324,6 +355,32 @@ namespace ShoppingOnline.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("User");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Email = "test@test.com",
+                            Password = "qwer123"
+                        });
+                });
+
+            modelBuilder.Entity("ShoppingOnline.Models.AvatarProfile", b =>
+                {
+                    b.HasOne("ShoppingOnline.Models.Profile", "Profile")
+                        .WithOne("Avatar")
+                        .HasForeignKey("ShoppingOnline.Models.AvatarProfile", "ProfileRef")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ShoppingOnline.Models.Comment", b =>
+                {
+                    b.HasOne("ShoppingOnline.Models.Profile", "Profile")
+                        .WithMany("Comments")
+                        .HasForeignKey("ProfileRef")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ShoppingOnline.Models.Order", b =>

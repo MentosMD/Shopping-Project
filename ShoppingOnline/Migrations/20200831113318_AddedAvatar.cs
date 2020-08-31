@@ -2,23 +2,10 @@
 
 namespace ShoppingOnline.Migrations
 {
-    public partial class AddedRating : Migration
+    public partial class AddedAvatar : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Comment",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Message = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Comment", x => x.ID);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Product",
                 columns: table => new
@@ -115,7 +102,6 @@ namespace ShoppingOnline.Migrations
                     Address = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true),
                     Phone = table.Column<string>(nullable: true),
-                    Avatar = table.Column<string>(nullable: true),
                     UserRef = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -125,6 +111,48 @@ namespace ShoppingOnline.Migrations
                         name: "FK_Profile_User_UserRef",
                         column: x => x.UserRef,
                         principalTable: "User",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AvatarProfile",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true),
+                    Extension = table.Column<string>(nullable: true),
+                    ProfileRef = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AvatarProfile", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_AvatarProfile_Profile_ProfileRef",
+                        column: x => x.ProfileRef,
+                        principalTable: "Profile",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comment",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Message = table.Column<string>(nullable: true),
+                    CreatedAt = table.Column<string>(nullable: true, defaultValueSql: "getdate()"),
+                    ProfileRef = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comment", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Comment_Profile_ProfileRef",
+                        column: x => x.ProfileRef,
+                        principalTable: "Profile",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -211,6 +239,22 @@ namespace ShoppingOnline.Migrations
                     { 7, "00-00036476-003", 100.0, "Nokia 5.1", 1999.0 }
                 });
 
+            migrationBuilder.InsertData(
+                table: "User",
+                columns: new[] { "ID", "Email", "Password", "Role", "Token" },
+                values: new object[] { 1, "test@test.com", "qwer123", null, null });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AvatarProfile_ProfileRef",
+                table: "AvatarProfile",
+                column: "ProfileRef",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comment_ProfileRef",
+                table: "Comment",
+                column: "ProfileRef");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Order_ProfileRef",
                 table: "Order",
@@ -252,6 +296,9 @@ namespace ShoppingOnline.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AvatarProfile");
+
             migrationBuilder.DropTable(
                 name: "Comment");
 

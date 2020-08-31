@@ -19,6 +19,7 @@ namespace ShoppingOnline.Context
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrdersItems> OrdersItems { get; set; }
+        public DbSet<AvatarProfile> AvatarProfiles { get; set; }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {}
@@ -52,8 +53,23 @@ namespace ShoppingOnline.Context
                 .HasOne(r => r.Rating)
                 .WithOne(p => p.Profile)
                 .HasForeignKey<Rating>(r => r.ProfileRef);
+
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Profile)
+                .WithMany(p => p.Comments)
+                .HasForeignKey(c => c.ProfileRef)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Profile>()
+                .HasOne(p => p.Avatar)
+                .WithOne(a => a.Profile)
+                .HasForeignKey<AvatarProfile>(a => a.ProfileRef);
             
             modelBuilder.OrdersBuilder();
+
+            modelBuilder.Entity<Comment>()
+                .Property(c => c.CreatedAt)
+                .HasDefaultValueSql("getdate()");
             
             modelBuilder.Entity<User>().ToTable("User");
             modelBuilder.Entity<Profile>().ToTable("Profile");
@@ -63,6 +79,7 @@ namespace ShoppingOnline.Context
             modelBuilder.Entity<Comment>().ToTable("Comment");
             modelBuilder.Entity<Order>().ToTable("Order");
             modelBuilder.Entity<OrdersItems>().ToTable("OrdersItems");
+            modelBuilder.Entity<AvatarProfile>().ToTable("AvatarProfile");
             
             modelBuilder.Seed();
         }

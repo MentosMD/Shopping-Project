@@ -63,5 +63,10 @@ namespace ShoppingOnline.Services.ProductService
         {
             return _ratingRepository.GetRatingById(idProduct, idProfile);
         }
+
+        public void AddRating(Rating newRating)
+        {
+             _ratingRepository.AddNewEntity(newRating);
+        }
     }
 }

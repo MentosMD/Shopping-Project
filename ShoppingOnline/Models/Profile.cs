@@ -10,10 +10,11 @@ namespace ShoppingOnline.Models
         public string Address { get; set; }
         public string City { get; set; }
         public string Phone { get; set; }
-        public string Avatar { get; set; }
+        public AvatarProfile Avatar { get; set; }
         public int UserRef { get; set;}
         public User User { get; set; }
         public ICollection<Order> Orders { get; set; }
         public Rating Rating { get; set; }
+        public ICollection<Comment> Comments { get; set; }
     }
 }
