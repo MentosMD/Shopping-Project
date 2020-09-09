@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using ShoppingOnline.Models;
 using ShoppingOnline.Repository;
+using ShoppingOnline.Repository.OrderRepository;
 using ShoppingOnline.Repository.ProductRepository;
 using ShoppingOnline.Repository.ProfileRepository;
 using ShoppingOnline.Repository.RatingRepository;
 using ShoppingOnline.Repository.UserRepository;
 using ShoppingOnline.Services;
+using ShoppingOnline.Services.OrderService;
 using ShoppingOnline.Services.ProductService;
 using ShoppingOnline.Services.ProfileService;
 
@@ -28,6 +30,7 @@ namespace ShoppingOnline.Extensions
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IRatingRepository, RatingRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
         }
 
         public static void AddServices(this IServiceCollection services)
@@ -35,6 +38,7 @@ namespace ShoppingOnline.Extensions
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IProfileService, ProfileService>();
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IOrderService, OrderService>();
         }
     }
 }
