@@ -10,5 +10,6 @@ namespace ShoppingOnline.Models
         public string CreatedAt { get; set; }
         public int ProfileRef { get; set; }
         public Profile Profile { get; set; }
+        public bool IsEdited { get; set; }
     }
 }

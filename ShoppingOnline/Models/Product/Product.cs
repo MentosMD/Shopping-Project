@@ -11,5 +11,6 @@ namespace ShoppingOnline.Models
         public ICollection<ProductPicture> ProductPictures { get; set; }
         public ProductDetail ProductDetail { get; set; }
         public ICollection<Rating> Ratings { get; set; }
+        public OrdersItems OrderItems { get; set; }
     }
 }

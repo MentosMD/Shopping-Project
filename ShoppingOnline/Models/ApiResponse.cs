@@ -7,11 +7,5 @@ namespace ShoppingOnline.Models
     {
         public int StatusCode { get; set; }
         public T Result { get; set; }
-
-        public ApiResponse(int statusCode, T result)
-        {
-            StatusCode = statusCode;
-            Result = result;
-        }
     }
 }

@@ -31,7 +31,12 @@ namespace ShoppingOnline.Controllers
             if (userId == null) throw new ArgumentNullException("User is null");
             var getProfile = _profileService.GetById(int.Parse(userId));
             if (getProfile == null) return BadRequest("Profile is not found");
-            return Ok(getProfile);
+            var response = new ApiResponse<Profile>()
+            {
+                StatusCode = 200,
+                Result = getProfile
+            };
+            return Ok(response);
         }
         
         [Authorize(Roles = Roles.User)]
@@ -51,7 +56,12 @@ namespace ShoppingOnline.Controllers
             profile.Phone = profileView.Phone;
             profile.Address = profileView.Address;
             _profileService.UpdateProfile(profile);
-            return Ok("Updated");
+            var response = new ApiResponse<string>()
+            {
+                StatusCode = 200,
+                Result = "Updated"
+            };
+            return Ok(response);
         }
     
         [Authorize(Roles = Roles.User)]
@@ -62,7 +72,12 @@ namespace ShoppingOnline.Controllers
             if (avatar.Length == 0) return BadRequest("Avatar is not found");
             var profileId = int.Parse(HttpContext.User.Identity.Name);
             _profileService.UploadImage(avatar, profileId);
-            return Ok("Uploaded!");
+            var response = new ApiResponse<string>()
+            {
+                StatusCode = 200,
+                Result = "Uploaded"
+            };
+            return Ok(response);
         }
     }
 }

@@ -31,6 +31,11 @@ namespace ShoppingOnline.Extensions
                 .WithMany(o => o.OrdersItems)
                 .HasForeignKey(o => o.OrderRef)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Product>()
+                .HasOne(o => o.OrderItems)
+                .WithOne(p => p.Product)
+                .HasForeignKey<OrdersItems>(p => p.ProductRef);
         }
     }
 }

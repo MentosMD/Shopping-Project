@@ -26,7 +26,7 @@ namespace ShoppingOnline.Controllers
         {
             if (userView == null)
             {
-                throw new ArgumentNullException("User is null");
+                return BadRequest("User is not found");
             }
             var validate = new LoginModelValidator();
             var validateResult = validate.Validate(userView);
@@ -35,7 +35,12 @@ namespace ShoppingOnline.Controllers
                 return BadRequest(validateResult.Errors);
             }
             var token = _userService.Authenticate(userView);
-            return Ok(token);
+            var response = new ApiResponse<object>()
+            {
+                StatusCode = 200,
+                Result = token
+            };
+            return Ok(response);
         }
 
         [Route("register")]
@@ -62,19 +67,31 @@ namespace ShoppingOnline.Controllers
             };
             newUser.Profile = createProfile;
             _userService.AddNewUser(newUser);
-            return Ok("User is created");
+            var response = new ApiResponse<string>()
+            {
+                StatusCode = 200,
+                Result = "User is created"
+            };
+            return Ok(response);
         }
         
         [Authorize(Roles = Roles.User)]
         [Route("password/change")]
         [HttpPut]
-        public IActionResult ChangePassword([FromBody] string password, string repeatPassword)
+        public IActionResult ChangePassword([FromBody] ChangePasswordViewModel passwordModel)
         {
-            if (!password.Equals(repeatPassword)) return BadRequest("Password is not match");
+            ChangePasswordModelValidator validator = new ChangePasswordModelValidator();
+            var validationResult = validator.Validate(passwordModel);
+            if (!validationResult.IsValid) return BadRequest("Password is not match");
             var user = _userService.GetById(int.Parse(HttpContext.User.Identity.Name));
-            user.Password = password;
+            user.Password = passwordModel.Password;
             _userService.ChangePassword(user);
-            return Ok("Changed!");
+            var response = new ApiResponse<string>()
+            {
+                StatusCode = 200,
+                Result = "Changed!"
+            };
+            return Ok(response);
         }
     }
 }

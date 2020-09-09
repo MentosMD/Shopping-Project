@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +32,12 @@ namespace ShoppingOnline.Controllers
         {
             var filtered = _productService.FilterByParameters(filter);
             var pagination = new Pagination<Product>(page, size);
-            return Ok(pagination.Paged(filtered));
+            var response = new ApiResponse<IEnumerable<Product>>()
+            {
+                StatusCode = 200,
+                Result = pagination.Paged(filtered) 
+            };
+            return Ok(response);
         }
         
         [Authorize(Roles = Roles.Admin)]
@@ -64,7 +70,12 @@ namespace ShoppingOnline.Controllers
             rating.Product = getProduct;
             rating.Profile = getProfile;
             _productService.AddRating(rating);
-            return Ok("Thanks for your rating");
+            var response = new ApiResponse<string>()
+            {
+                StatusCode = 200,
+                Result = "Thanks for your rating" 
+            };
+            return Ok(response);
         }
     }
 }
